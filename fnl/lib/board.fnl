@@ -26,4 +26,19 @@
           tile (-> board (. row-index (. i)))]
       (and won (= turn tile)))))
 
-{: draw : check-row : check-col : check-tl-to-br : check-tr-to-bl}
+(fn check [board turn]
+  (fn check-all-rows [board turn index]
+    (if (= index 0) false
+        (or (check-row board turn index)
+            (check-all-rows board turn (- index 1)))))
+
+  (fn check-all-cols [board turn index]
+    (if (= index 0) false
+        (or (check-col board turn index)
+            (check-all-cols board turn (- index 1)))))
+
+  (-> false (or (check-all-rows board turn (length board)))
+      (or (check-all-cols board turn (length board)))
+      (or (check-tr-to-bl board turn)) (or (check-tl-to-br board turn))))
+
+{: draw : check-row : check-col : check-tl-to-br : check-tr-to-bl : check}

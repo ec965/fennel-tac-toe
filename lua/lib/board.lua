@@ -43,4 +43,21 @@ local function check_tr_to_bl(board, turn)
   end
   return won
 end
-return {draw = draw, ["check-row"] = check_row, ["check-col"] = check_col, ["check-tl-to-br"] = check_tl_to_br, ["check-tr-to-bl"] = check_tr_to_bl}
+local function check(board, turn)
+  local function check_all_rows(board0, turn0, index)
+    if (index == 0) then
+      return false
+    else
+      return (check_row(board0, turn0, index) or check_all_rows(board0, turn0, (index - 1)))
+    end
+  end
+  local function check_all_cols(board0, turn0, index)
+    if (index == 0) then
+      return false
+    else
+      return (check_col(board0, turn0, index) or check_all_cols(board0, turn0, (index - 1)))
+    end
+  end
+  return ((((false or check_all_rows(board, turn, #board)) or check_all_cols(board, turn, #board)) or check_tr_to_bl(board, turn)) or check_tl_to_br(board, turn))
+end
+return {draw = draw, ["check-row"] = check_row, ["check-col"] = check_col, ["check-tl-to-br"] = check_tl_to_br, ["check-tr-to-bl"] = check_tr_to_bl, check = check}

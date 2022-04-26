@@ -13,3 +13,5 @@
                                                [:x :o :x]
                                                [:x :x :o]]
                                               :o))
+
+(print :check (board.check [[:o :x :o] [:x :o :x] [:o :x :o]] :o))

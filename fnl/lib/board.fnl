@@ -23,7 +23,7 @@
   "check diagonal top right to bottom left"
   (accumulate [won true i row (ipairs board)]
     (let [row-index (- (length row) (- i 1))
-          tile (-> board (. row-index (. i)))]
+          tile (-> board (. row-index) (. i))]
       (and won (= turn tile)))))
 
 (fn check [board turn]

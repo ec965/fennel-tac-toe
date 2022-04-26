@@ -6,12 +6,15 @@ DIST_DIR := ./lua
 SRC_FILES := $(wildcard $(SRC_DIR)/*.fnl) $(wildcard $(LIB_DIR)/*.fnl)
 DIST_FILES := $(patsubst $(SRC_DIR)/%.fnl,$(DIST_DIR)/%.lua,$(SRC_FILES))
 
-.PHONY: all run clean
+.PHONY: all run clean test
 
 all: $(LIB_DIST_DIR) $(DIST_FILES)
 
 run: all
 	cd ./lua && lua init.lua
+
+test: all
+	cd ./lua && lua test.lua
 
 clean: 
 	rm -rf $(DIST_FILES)

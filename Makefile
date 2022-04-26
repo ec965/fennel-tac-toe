@@ -1,21 +1,23 @@
 SRC_DIR := ./fnl
-LIB_DIR := ./fnl/ttt
+LIB_DIR := ./fnl/lib
+LIB_DIST_DIR := ./lua/lib
 DIST_DIR := ./lua
+
 SRC_FILES := $(wildcard $(SRC_DIR)/*.fnl) $(wildcard $(LIB_DIR)/*.fnl)
 DIST_FILES := $(patsubst $(SRC_DIR)/%.fnl,$(DIST_DIR)/%.lua,$(SRC_FILES))
 
-.PHONY: all run clean debug
+.PHONY: all run clean
 
-debug:
-	$(info var is $(SRC_FILES))
-
-all: $(DIST_FILES)
+all: $(LIB_DIST_DIR) $(DIST_FILES)
 
 run: all
-	lua ./lua/init.lua
+	cd ./lua && lua init.lua
 
 clean: 
 	rm -rf $(DIST_FILES)
+
+$(LIB_DIST_DIR):
+	mkdir -p $(LIB_DIST_DIR)
 
 $(DIST_DIR)/%.lua: $(SRC_DIR)/%.fnl
 	fennel -c $< > $@

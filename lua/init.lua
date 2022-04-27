@@ -1,7 +1,18 @@
 local board = require("lib.board")
-board.draw({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}})
-print("check row", board["check-row"]({{"x", "x", "o"}, {"x", "x", "x"}, {"x", "x", "o"}}, "x", 2))
-print("check col", board["check-col"]({{"x", "x", "x"}, {"x", "x", "x"}, {"x", "x", "o"}}, "o", 1))
-print("check tl to br", board["check-tl-to-br"]({{"o", "x", "o"}, {"x", "o", "x"}, {"o", "x", "o"}}, "o"))
-print("check tr to bl", board["check-tr-to-bl"]({{"o", "x", "o"}, {"x", "o", "x"}, {"x", "x", "o"}}, "o"))
-return print("check", board.check({{"o", "x", "o"}, {"x", "o", "x"}, {"o", "x", "o"}}, "o"))
+local function set_tile(game, peice)
+  do
+    local new_tile = io.read()
+    local indecies = board["translate-tile"](new_tile)
+    if ((nil ~= indecies) and (2 == #indecies)) then
+      local row_i = indecies[1]
+      local col_i = indecies[2]
+      game[row_i][col_i] = peice
+    else
+      print("Invalid tile, please try again.")
+      set_tile(game, peice)
+    end
+  end
+  return game
+end
+local game = board["get-raw-board"]()
+return board.draw(set_tile(board.draw(game), "x"))

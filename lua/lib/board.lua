@@ -1,15 +1,42 @@
+local function get_raw_board()
+  return {{"A", "B", "C"}, {"D", "E", "F"}, {"G", "H", "I"}}
+end
+local function translate_tile(find_tile)
+  local function found(coord)
+    return (2 == #coord)
+  end
+  local coord = {}
+  for i, row in ipairs(get_raw_board()) do
+    if found(coord) then
+      coord = coord
+    else
+      local coord0 = {}
+      for j, tile in ipairs(row) do
+        if found(coord0) then
+          coord0 = coord0
+        elseif (tile == find_tile) then
+          coord0 = {i, j}
+        else
+          coord0 = {}
+        end
+      end
+      coord = coord0
+    end
+  end
+  return coord
+end
 local function draw(board)
   for i, row in ipairs(board) do
-    local function _1_()
+    local function _3_()
       local str = ""
       for j, tile in ipairs(row) do
         str = (str .. " " .. tile)
       end
       return str
     end
-    print(_1_())
+    print(_3_())
   end
-  return nil
+  return board
 end
 local function check_col(board, turn, index)
   local won = true
@@ -60,4 +87,4 @@ local function check(board, turn)
   end
   return ((((false or check_all_rows(board, turn, #board)) or check_all_cols(board, turn, #board)) or check_tr_to_bl(board, turn)) or check_tl_to_br(board, turn))
 end
-return {draw = draw, ["check-row"] = check_row, ["check-col"] = check_col, ["check-tl-to-br"] = check_tl_to_br, ["check-tr-to-bl"] = check_tr_to_bl, check = check}
+return {draw = draw, ["check-row"] = check_row, ["check-col"] = check_col, ["check-tl-to-br"] = check_tl_to_br, ["check-tr-to-bl"] = check_tr_to_bl, check = check, ["get-raw-board"] = get_raw_board, ["translate-tile"] = translate_tile}

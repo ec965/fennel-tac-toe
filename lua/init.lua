@@ -1,18 +1,4 @@
 local board = require("lib.board")
-local function set_tile(game, peice)
-  do
-    local new_tile = io.read()
-    local indecies = board["translate-tile"](new_tile)
-    if ((nil ~= indecies) and (2 == #indecies)) then
-      local row_i = indecies[1]
-      local col_i = indecies[2]
-      game[row_i][col_i] = peice
-    else
-      print("Invalid tile, please try again.")
-      set_tile(game, peice)
-    end
-  end
-  return game
-end
+local play = require("lib.play")
 local game = board["get-raw-board"]()
-return board.draw(set_tile(board.draw(game), "x"))
+return board.draw(play["set-tile"](board.draw(game), "x"))
